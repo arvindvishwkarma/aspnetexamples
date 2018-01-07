@@ -1,0 +1,41 @@
+﻿@model IEnumerable<FoodRestaurant.Models.Restaurant>
+
+@{
+    ViewBag.Title = "List";
+}
+
+<h2>List of restaurants</h2>
+
+<p>
+    @Html.ActionLink("Create New Restaurant", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+            </td>
+        </tr>
+    }
+
+    @if (!Model.Any())
+    {
+        <text>
+            <tr>
+                <td colspan="2">No record founds.</td>
+            </tr>
+        </text>
+    }
+</table>
