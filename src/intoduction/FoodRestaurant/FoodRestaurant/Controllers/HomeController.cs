@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
+using FoodRestaurant.Domains;
 using FoodRestaurant.Models;
 
 namespace FoodRestaurant.Controllers
@@ -24,21 +23,29 @@ namespace FoodRestaurant.Controllers
 
         public ActionResult Create()
         {
-            return View();
+            CreateOrEditRestaurantModel model = new CreateOrEditRestaurantModel();
+
+            FoodRestaurantContext db = new FoodRestaurantContext();
+            model.Cities = db.Cities.Select(m => new SelectListItem() { Text = m.Name, Value = m.Id.ToString() }).ToList();
+
+            return View(model);
         }
 
         [HttpPost]
-        public ActionResult Create(Restaurant restaurant)
+        public ActionResult Create(CreateOrEditRestaurantModel restaurant)
         {
+            FoodRestaurantContext db = new FoodRestaurantContext();
+
             if (!ModelState.IsValid)
             {
+                restaurant.Cities = db.Cities.Select(m => new SelectListItem() { Text = m.Name, Value = m.Id.ToString() }).ToList();
                 return View(restaurant);
             }
 
             Restaurant restaurantToCreate = new Restaurant();
             restaurantToCreate.Name = restaurant.Name;
+            restaurantToCreate.CityId = restaurant.CityId;
 
-            FoodRestaurantContext db = new FoodRestaurantContext();
             db.Restaurants.Add(restaurantToCreate);
             db.SaveChanges();
 
@@ -54,23 +61,34 @@ namespace FoodRestaurant.Controllers
                 return RedirectToAction("List");
             }
 
-            return View(restaurant);
+            CreateOrEditRestaurantModel model = new CreateOrEditRestaurantModel();
+            model.Id = restaurant.Id;
+            model.Name = restaurant.Name;
+            model.CityId = restaurant.CityId;
+
+            model.Cities = db.Cities.Select(m => new SelectListItem() { Text = m.Name, Value = m.Id.ToString() }).ToList();
+
+            return View(model);
         }
 
         [HttpPost]
-        public ActionResult Edit(int id, Restaurant restaurant)
+        public ActionResult Edit(int id, CreateOrEditRestaurantModel restaurant)
         {
+            FoodRestaurantContext db = new FoodRestaurantContext();
+
             if (!ModelState.IsValid)
             {
+                restaurant.Cities = db.Cities.Select(m => new SelectListItem() { Text = m.Name, Value = m.Id.ToString() }).ToList();
                 return View(restaurant);
             }
 
-            FoodRestaurantContext db = new FoodRestaurantContext();
+            
             Restaurant restaurantToEdit = db.Restaurants.FirstOrDefault(m => m.Id == id);
 
             if (restaurantToEdit != null)
             {
                 restaurantToEdit.Name = restaurant.Name;
+                restaurantToEdit.CityId = restaurant.CityId;
                 db.SaveChanges();
             }
 

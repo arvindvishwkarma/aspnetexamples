@@ -1,13 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace FoodRestaurant.Models
+namespace FoodRestaurant.Domains
 {
-    public class Restaurant
+    public class City
     {
         [Key]
         public int Id { get; set; }
 
-        [Required]
         public string Name { get; set; }
     }
 }

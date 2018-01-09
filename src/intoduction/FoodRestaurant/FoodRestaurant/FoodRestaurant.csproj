@@ -115,8 +115,10 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
-    <Compile Include="Models\FoodRestaurantContext.cs" />
-    <Compile Include="Models\Restaurant.cs" />
+    <Compile Include="Domains\City.cs" />
+    <Compile Include="Domains\FoodRestaurantContext.cs" />
+    <Compile Include="Domains\Restaurant.cs" />
+    <Compile Include="Models\CreateRestaurantModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
